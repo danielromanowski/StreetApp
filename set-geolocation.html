@@ -42,11 +42,23 @@
     </style>
 </head>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+
 <script>
+
     function saveLocation() {
     const locationName = document.getElementById('locationName').value;
     alert('Location saved: ' + locationName);
     }
+
+    function initMap() {
+            var mapOptions = {
+                center: new google.maps.LatLng(40.7128, -74.0060),
+                zoom: 12,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        }
 </script>
 
 <body>
@@ -61,6 +73,9 @@
         <h1>Street Art Dreams Set User Geolocations</h1>
         <p>Map API will be here</p>
 
+
+    <div id="map" style="width:100%;height:400px;"></div>
+    
     <label for="locationName">Location Name:</label>
     <input type="text" id="locationName" name="locationName">
     <button onclick="saveLocation()">Save Location</button>
