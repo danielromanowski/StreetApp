@@ -41,6 +41,14 @@
         }
     </style>
 </head>
+
+<script>
+    function saveLocation() {
+    const locationName = document.getElementById('locationName').value;
+    alert('Location saved: ' + locationName);
+    }
+</script>
+
 <body>
     <div class="navbar">
         <a href="#home">Home</a>
@@ -52,6 +60,11 @@
     <div class="content">
         <h1>Street Art Dreams Set User Geolocations</h1>
         <p>Map API will be here</p>
+
+    <label for="locationName">Location Name:</label>
+    <input type="text" id="locationName" name="locationName">
+    <button onclick="saveLocation()">Save Location</button>
+     
     </div>
 
     <div class="footer">
