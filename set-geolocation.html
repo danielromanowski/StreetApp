@@ -31,7 +31,6 @@
             color: white;
             text-align: center;
             padding: 10px 0;
-            position: fixed;
             width: 100%;
             bottom: 0;
         }
@@ -39,29 +38,63 @@
             padding: 20px;
             margin-bottom: 50px; /* Space for the footer */
         }
-    </style>
-</head>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+        .locationOptions {
+            padding: 20px;
+            margin-bottom: 50px; /* Space for the footer */
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+</head>
 
 <script>
 
-    function saveLocation() {
-    const locationName = document.getElementById('locationName').value;
-    alert('Location saved: ' + locationName);
+    function initMap() {
+
+        var map = L.map('map').setView([40.7128, -74.0060], 13);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.marker([51.5, -0.09]).addTo(map)
+            .bindPopup('A pretty CSS popup.<br> Easily customizable.')
+            .openPopup();
+
     }
 
-    function initMap() {
-            var mapOptions = {
-                center: new google.maps.LatLng(40.7128, -74.0060),
-                zoom: 12,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    function deleteLocation() {
+            const locationName = document.getElementById('locationName').value;
+            alert('Location deleted: ' + locationName);
         }
-</script>
 
-<body>
+    function saveLocation() {
+            const locationName = document.getElementById('locationName').value;
+            alert('Location saved: ' + locationName);
+            }
+
+    function setRadius() {
+        const radius = document.getElementById('radius').value;
+        alert('Radius set to: ' + radius + ' feet');
+    }
+
+    function setDuration() {
+            const duration = document.getElementById('duration').value;
+            alert('Duration set to: ' + duration + ' minutes');
+        }
+
+    </script>
+
+<body onload="initMap()">
+
     <div class="navbar">
         <a href="#home">Home</a>
         <a href="#about">About</a>
@@ -71,15 +104,72 @@
 
     <div class="content">
         <h1>Street Art Dreams Set User Geolocations</h1>
-        <p>Map API will be here</p>
+
+    <div id="map" style="width:100%;height:400px;"></div></div>
+
+    <div class="locationOptions">  
+
+        <label for="locationName">Location Name:</label>
+        <input type="text" id="locationName" name="locationName">
+
+        <p></p>
+
+        <div>
+
+            <label for="latitude">Latitude:</label>
+            <input type="text" id="latitude" name="latitude">
+
+            <label for="longitude">Longitude:</label>
+            <input type="text" id="longitude" name="longitude">
+
+        </div>
+
+        <p></p>
+
+        <label for="radius">Radius (feet):</label>
+        <input type="number" id="radius" name="radius">
+
+        <div class="perfoemanceType">
+
+            <h3>Performance Type:</h3>
+
+            <input type="radio" id="any" name="any" value="any">
+            <label for="any">Any</label>
+
+            <input type="radio" id="music" name="music" value="music">
+            <label for="music">Music</label>
+
+            <input type="radio" id="dance" name="dance" value="dance">
+            <label for="dance">Dance</label>
+
+            <input type="radio" id="drama" name="drama" value="drama">
+            <label for="drama">Drama</label>
+
+            <input type="radio" id="art" name="art" value="art">
+            <label for="art">Art</label>
 
 
-    <div id="map" style="width:100%;height:400px;"></div>
-    
-    <label for="locationName">Location Name:</label>
-    <input type="text" id="locationName" name="locationName">
-    <button onclick="saveLocation()">Save Location</button>
-     
+        </div>
+
+        <p></p>
+
+        <div>
+
+            <label for="duration">Duration (minutes):</label>
+            <input type="number" id="duration" name="duration">
+
+        </div>
+
+        <p></p>
+
+        <div>
+
+            <button onclick="saveLocation()">Save Location</button>
+
+            <button onclick="deleteLocation()">Delete Location</button>
+
+        </div>
+
     </div>
 
     <div class="footer">
