@@ -65,9 +65,21 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        L.marker([40.7128, -74.0060]).addTo(map)
-            .bindPopup('A pretty CSS popup.<br> Easily customizable.')
-            .openPopup();
+        map.on('click', function(e) {
+
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+
+            L.marker([lat, lng]).addTo(map);
+
+            L.popup()
+                .setLatLng([lat, lng])
+                .setContent("<p>You clicked here: (" + lat + ", " + lng + ")</p>")
+                .openOn(map);
+
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+            });
 
     }
 
@@ -77,19 +89,30 @@
         }
 
     function saveLocation() {
+
             const locationName = document.getElementById('locationName').value;
-            alert('Location saved: ' + locationName);
-            }
-
-    function setRadius() {
-        const radius = document.getElementById('radius').value;
-        alert('Radius set to: ' + radius + ' feet');
-    }
-
-    function setDuration() {
+            const latitude = document.getElementById('latitude').value;
+            const longitude = document.getElementById('longitude').value;
+            const radius = document.getElementById('radius').value;
+            const performanceType = document.querySelector('input[name="performanceType"]:checked').value;
             const duration = document.getElementById('duration').value;
-            alert('Duration set to: ' + duration + ' minutes');
-        }
+
+            var data = locationName + ',' + latitude + ',' + longitude + ',' + radius + ',' + 
+                       performanceType + ',' + duration;
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert(xhr.responseText);
+                }
+            };
+
+            xhr.open("GET","../include/save-location.php?data="+data,true);
+
+            xhr.send();
+           
+            }
 
     </script>
 
@@ -133,21 +156,20 @@
 
             <h3>Performance Type:</h3>
 
-            <input type="radio" id="any" name="any" value="any">
-            <label for="any">Any</label>
+            <input type="radio" id="performanceTypeAny" name="performanceType" value="any">
+            <label for="performanceTypeAny">Any</label>
 
-            <input type="radio" id="music" name="music" value="music">
-            <label for="music">Music</label>
+            <input type="radio" id="performanceTypeMusic" name="performanceType" value="music">
+            <label for="performanceTypeMusic">Music</label>
 
-            <input type="radio" id="dance" name="dance" value="dance">
-            <label for="dance">Dance</label>
+            <input type="radio" id="performanceTypeDance" name="performanceType" value="dance">
+            <label for="performanceTypeDance">Dance</label>
 
-            <input type="radio" id="drama" name="drama" value="drama">
-            <label for="drama">Drama</label>
+            <input type="radio" id="performanceTypeDrama" name="performanceType" value="drama">
+            <label for="performanceTypeDrama">Drama</label>
 
-            <input type="radio" id="art" name="art" value="art">
-            <label for="art">Art</label>
-
+            <input type="radio" id="performanceTypeArt" name="performanceType" value="art">
+            <label for="performanceTypeArt">Art</label>
 
         </div>
 
