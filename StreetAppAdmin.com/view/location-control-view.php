@@ -91,9 +91,10 @@
             const radius = document.getElementById('radius').value;
             const performanceType = document.querySelector('input[name="performanceType"]:checked').value;
             const duration = document.getElementById('duration').value;
+            const reservationType = document.getElementById('reservationType').value;
 
             var data = locationName + ',' + latitude + ',' + longitude + ',' + radius + ',' + 
-                       performanceType + ',' + duration;
+                       performanceType + ',' + duration + ',' + reservationType;
 
             const xhr = new XMLHttpRequest();
 
@@ -176,6 +177,16 @@
             <label for="duration">Duration (minutes):</label>
             <input type="number" id="duration" name="duration">
 
+        </div>
+
+        <p></p>
+
+        <div>
+            <label for="reservationType">Reservation Type:</label>
+            <select id="reservationType" name="reservationType">
+                <option value="reserve">Reserve</option>
+                <option value="queue">Queue</option>
+            </select>
         </div>
 
         <p></p>
