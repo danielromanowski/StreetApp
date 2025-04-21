@@ -1,49 +1,17 @@
+<?php
+
+   include '../controller/load-locations.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Street Art Dreams</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .navbar {
-            background-color: #333;
-            overflow: hidden;
-        }
-        .navbar a {
-            float: left;
-            display: block;
-            color: #f2f2f2;
-            text-align: center;
-            padding: 14px 20px;
-            text-decoration: none;
-        }
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-        .footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            width: 100%;
-            bottom: 0;
-        }
-        .content {
-            padding: 20px;
-            margin-bottom: 50px; /* Space for the footer */
-        }
+    <style></style>
 
-        .locationOptions {
-            padding: 20px;
-            margin-bottom: 50px; /* Space for the footer */
-        }
-    </style>
+    <link link rel="stylesheet" href="css/location-control-view.css"/>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -61,11 +29,38 @@
 
         var map = L.map('map').setView([40.7128, -74.0060], 13);
 
+        <?php 
+
+            foreach ($savedLocations as $location) {
+
+                echo"
+
+                var data ="; echo $location;   echo ";
+                
+                var geojsonLayer = L.geoJSON(data, {
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup(feature.properties.name);
+                    }
+                }).addTo(map);
+
+                "; 
+            }
+
+        ?>
+        
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+
+
         map.on('click', function(e) {
+
+            map.eachLayer(function (layer) {
+                if (layer instanceof L.Marker) {
+                    map.removeLayer(layer);
+                }
+            });
 
             var lat = e.latlng.lat;
             var lng = e.latlng.lng;
@@ -104,7 +99,7 @@
                 }
             };
 
-            xhr.open("GET","../include/save-location.php?data="+data,true);
+            xhr.open("GET","../model/include/save-location.php?data="+data,true);
 
             xhr.send();
            
